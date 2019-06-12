@@ -8,7 +8,6 @@ RUN cd /go/src/github.com/nwillems/tinjis/payment/ && \
 
 FROM scratch
 
-ADD ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/github.com/nwillems/tinjis/payment/payment /payment
 
 ENTRYPOINT [ "/payment" ]

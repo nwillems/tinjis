@@ -13,7 +13,8 @@ type PaymentResponse struct {
 	Result bool `json:"result"`
 }
 
-func pingHandler(w http.ResponseWriter, r *http.Request) {
+// With inspiration from https://github.com/kelseyhightower/app-healthz
+func healthzHandler(w http.ResponseWriter, r *http.Request) {
 	x := "{\"status\": \"Ready and waiting\", \"up\": true}"
 	fmt.Fprint(w, x)
 }
@@ -26,7 +27,7 @@ func payHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Consider if we should de-serialize request
 	//  This would only be useful if we wanted to be consistent with our response
-	result := (rand.Intn(1) == 0)
+	result := (rand.Intn(2) == 0)
 	response := &PaymentResponse{Result: result}
 
 	x, err := json.Marshal(response)
@@ -34,12 +35,14 @@ func payHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Woops", 501)
 	}
 
-	fmt.Fprint(w, x)
+	fmt.Fprint(w, string(x))
 }
 
 func main() {
+	log.Println("Starting payment app")
+
 	http.HandleFunc("/pay", payHandler)
-	http.HandleFunc("/ping", pingHandler)
+	http.HandleFunc("/healthz", healthzHandler)
 
 	log.Fatal(http.ListenAndServe(":9000", nil))
 }
