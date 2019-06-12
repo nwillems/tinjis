@@ -14,6 +14,7 @@ type PaymentResponse struct {
 }
 
 // With inspiration from https://github.com/kelseyhightower/app-healthz
+//  Not that this service has dependencies, yet...
 func healthzHandler(w http.ResponseWriter, r *http.Request) {
 	x := "{\"status\": \"Ready and waiting\", \"up\": true}"
 	fmt.Fprint(w, x)
