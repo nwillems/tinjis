@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: antaeus-deploy
+  labels:
+    app: antaeus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: antaeus
+  template:
+    metadata:
+      labels:
+        app: antaeus
+    spec:
+      containers:
+      - name: antaeus-latest
+        image: nwillems/antaeus:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources: # Should probably do some profiling about this
+          requests:
+            memory: "500Mi"
+            cpu: "250m"
+          limits:
+            memory: "1000Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: antaeus-service
+spec:
+  selector:
+    app: antaeus
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
