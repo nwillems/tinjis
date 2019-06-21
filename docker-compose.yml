@@ -4,3 +4,7 @@ services:
     build: .
     ports:
      - "8000:8000"
+  payment:
+    image: nwillems/payment:c0586788a41f323ddfbdd69e4f32df983ba1e67b
+    ports:
+     - "9000:9000"

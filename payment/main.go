@@ -28,6 +28,8 @@ func payHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Consider if we should de-serialize request
 	//  This would only be useful if we wanted to be consistent with our response
+
+	// Consider if we should seed the random generator....
 	result := (rand.Intn(2) == 0)
 	response := &PaymentResponse{Result: result}
 
@@ -42,7 +44,7 @@ func payHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.Println("Starting payment app")
 
-	http.HandleFunc("/pay", payHandler)
+	http.HandleFunc("/", payHandler)
 	http.HandleFunc("/healthz", healthzHandler)
 
 	log.Fatal(http.ListenAndServe(":9000", nil))
