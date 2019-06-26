@@ -34,7 +34,7 @@ spec:
           httpGet:
             path: /rest/health
             port: 8000
-          initialDelaySeconds: 302
+          initialDelaySeconds: 720
           periodSeconds: 5
         readinessProbe:
           httpGet:
