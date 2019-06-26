@@ -20,6 +20,9 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
+        env:
+        - name: PAYMENT_PROVIDER_ENDPOINT
+          value: "http://payment-service:80"
         resources: # Should probably do some profiling about this
           requests:
             memory: "500Mi"
@@ -27,12 +30,25 @@ spec:
           limits:
             memory: "1000Mi"
             cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /rest/health
+            port: 8000
+          initialDelaySeconds: 302
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /rest/health
+            port: 8000
+          initialDelaySeconds: 720
+          periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: antaeus-service
 spec:
+  type: LoadBalancer
   selector:
     app: antaeus
   ports:
